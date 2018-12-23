@@ -3,7 +3,11 @@ alias tmux='tmux -2'
 alias less='less -R'
 alias diff='colordiff'
 alias dc='cd'
-alias nethack-online='ssh nethack@nethack.alt.org ; clear'
-alias tron-online='ssh sshtron.zachlatta.com ; clear'
-alias yams='find . -type f -name "*.yml*" | sed "s|\./||g" | egrep -v "(\.kitchen/|\[warning\]|\.molecule/)" | xargs yamllint -f parsable'
 alias glog='git log --oneline --graph --color --all --decorate'
+
+alias core="ssh core@192.168.0.36"
+alias websites="ssh michael@192.168.0.29"
+alias xen="ssh root@192.168.0.12"
+alias jetstag="ssh michael@192.168.0.24"
+alias plex="ssh plex@192.168.0.38"
+alias gitlab="ssh core@192.168.0.46"
