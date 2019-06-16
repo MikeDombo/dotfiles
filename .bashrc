@@ -132,3 +132,28 @@ fi
 
 [ -z "$TMUX"  ] && { tmux attach || exec tmux new-session;}
 
+
+# Make short hostname only if its not an IP address
+__tm_get_hostname(){
+    local HOST="$(echo $* | rev | cut -d ' ' -f 1 | rev)"
+    echo $HOST
+}
+
+__tm_get_current_window(){
+    tmux list-windows| awk -F : '/\(active\)$/{print $1}'
+}
+
+# Rename window according to __tm_get_hostname and then restore it after the command
+__tm_command() {
+    if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=| cut -d : -f 1)" = "tmux" ]; then
+        __tm_window=$(__tm_get_current_window)
+        # Use current window to change back the setting. If not it will be applied to the active window
+        trap "tmux set-window-option -t $__tm_window automatic-rename on 1>/dev/null" RETURN
+        tmux rename-window "$(__tm_get_hostname $*)"
+    fi
+    command "$@"
+}
+
+ssh() {
+    __tm_command ssh "$@"
+}
